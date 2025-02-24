@@ -16,9 +16,12 @@ Cyber check for sha-1:
 ===========================
 
 grep -r "SHA1" /etc/httpd/conf /etc/httpd/conf.d
-openssl x509 -in /path/to/cert.pem -text -noout | grep 'Signature Algorithm'
+openssl x509 -in /path/to/cert.crt -text -noout | grep 'Signature Algorithm'
 Review Keystore and Certificates:
     If the configuration references keystore files (e.g., keystore.jks), inspect the keystore to determine the hash algorithm used for the certificates.
     Use the keytool command to inspect the keystore:
-        keytool -list -v -keystore $CATALINA_HOME/conf/keystore.jks
+        
+        path of keytool is - /opt/clod/jdk-11.0.20/bin
+        keytool -list -v -keystore /opt/clod/tomcat/truststore/truststore.jks
+
             Look for the Signature algorithm line in the output to see if SHA-1 is being used.
