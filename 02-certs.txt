@@ -3,7 +3,7 @@
 commands:
 ----------
 
-$ openssl pkcs12 -export -out prp-uid-pro.pfx -inkey prp-dxp-it.hpe.com.key -in prp-dxp-it.hpe.com.crt
+$ openssl pkcs12 -export -out sskr-uid-pro.pfx -inkey sskr-cmn-it.hpe.com.key -in sskr-cmn-it.hpe.com.crt
 
 copy to local m/c --> open keystore explorer --> open an existing keystore --> point to copied prp-uid-pro.pfx --> rt.click  on 1 edit cert chain & append certificate --> poin to HPE_Private_SSL_HPE_PRIVATE_root_CA  append it -> now again rt.click on top bar edit cert chain & append certificate --> point ot HPE_Private_root_CA append --> close the keystore explorer
 

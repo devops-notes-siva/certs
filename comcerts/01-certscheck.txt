@@ -1,0 +1,63 @@
+generate key, csr an crt:
+============================
+
+key:
+--------
+openssl genpkey -algorithm RSA -out server.key
+openssl genrsa -out server.key 2048 (older format:)
+ ex: openssl genrsa -out ${HOSTNAME}.key 2048
+.
+csr:
+------
+openssl req -new -key server.key -out server.csr
+
+You'll be asked for details like:
+        Country Name (2 letter code) [US]: IN
+        State or Province Name (full name) [Some-State]: Karnataka
+        Locality Name (eg, city) []: Bangalore
+        Organization Name (eg, company) [Internet Widgits Pty Ltd]: MyCompany
+        Organizational Unit Name (eg, section) []: IT
+        Common Name (e.g. server FQDN or YOUR name) []: myserver.com
+        Email Address []: admin@myserver.com
+    The Common Name (CN) should match your domain (e.g., myserver.com).
+
+    ex: openssl req -new -key ${HOSTNAME}.key -out ${HOSTNAME}.csr -subj "/C=US/ST=California/L=Palo\ Alto/O=siva kumar Enterprise Company/CN=${HOSTNAME}"
+
+Generate a Self-Signed Certificate :
+------------------------------------
+openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt
+
+Check certificate details:
+----------------------------
+openssl x509 -in server.crt -text -noout
+Check private key:
+------------
+openssl rsa -in server.key -check
+
+
+
+to generate .p12:
+--------------------
+openssl pkcs12 -export -in server.crt -inkey server.key -name ‘1’ -out certificate1.p12
+
+
+View contents using keytool:
+------------------------------
+$ keytool -list -v -keystore certificate1.p12 -storetype PKCS12
+    
+    keytool
+        A Java utility (comes with JDK) for managing keystores and certificates.
+    -list
+        Lists the contents of the keystore (all stored certificates and keys).
+    -v
+        Enables verbose mode, showing detailed information about each entry (like alias, validity, fingerprints, etc.).
+    -name ‘1’
+        Sets an alias for the certificate entry in the .p12 file.
+        The alias (in this case, '1') is used when referring to this certificate inside a keystore.
+    -keystore certificate1.p12
+        Specifies the keystore file (certificate1.p12) from which we want to list the contents.
+    -storetype PKCS12
+        Defines the type of keystore. Since .p12 files use PKCS12 format, this is needed to correctly read the file.
+
+$ openssl pkcs12 -info -in certificate1.p12 
+
